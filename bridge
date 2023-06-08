@@ -1,0 +1,74 @@
+#include<iostream>
+#include<string>
+ 
+using namespace std;
+ 
+class IColor // Deklaracja interfejsu IColor (Pierwsza rzecz która się zmienia)
+{
+public:
+    virtual string Color() = 0; // Zwracamy jaki kolor ma dany samochód
+};
+ 
+class RedColor : public IColor // Klasa RedColor implementująca interfejs
+{
+public:
+    string Color()
+    {
+        return "o kolorze Czerwonym";
+    }
+};
+ 
+class BlueColor : public IColor // Klasa BlueColor implementująca interfejs
+{
+public:
+    string Color()
+    {
+        return "o kolorze Niebieskim";
+    }
+};
+ 
+class ICarModel // Deklaracja interfejsu ICarModel (Druga rzecz która się zmienia)
+{
+public:
+    virtual string WhatIsMyType() = 0; // Zwracamy jaki model ma dany samochód
+};
+ 
+class Model_A : public ICarModel // Wprowadzamy model samochodu Model_A
+{
+    IColor* _myColor; // Wskaźnik do IColor, następnie zostanie to zinicjalizowane podczas konstrukcji programu
+public:
+    Model_A(IColor *obj) :_myColor(obj){} // Konstrukcja, gdzie wcześniej wspomniana inicjalizacja ma miejce.
+    string WhatIsMyType()
+    {
+        return "Wybrany zostal Model_A " + _myColor->Color();
+    }
+};
+ 
+class Model_B : public ICarModel // Wprowadzamy model samochodu Model_B
+{
+    IColor* _myColor;
+public:
+    Model_B(IColor *obj) :_myColor(obj){}
+    string WhatIsMyType()
+    {
+        return "Wybrany zostal Model_B " + _myColor->Color();;
+    }
+};
+
+int main()
+{
+	// Deklarowanie i inicjowanie instancji klas.
+    IColor* red = new RedColor();
+    IColor* blue = new BlueColor();
+ 
+    ICarModel* modelA = new Model_B(red);
+    ICarModel* modelB = new Model_A(blue);
+ 
+ 	// Wywołanie metody
+    cout << "\n" << modelA->WhatIsMyType();
+    cout << "\n" << modelB->WhatIsMyType() << "\n\n";
+ 
+    delete red;
+    delete blue;
+    return 1;
+}
